@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — Eneba</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    Free shipping on orders over $50 &nbsp;|&nbsp; Discreet packaging guaranteed 🔒
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <a href="index.html" class="logo" style="text-decoration:none">Ene<span>ba</span></a>
+    <nav class="nav-links">
+      <a href="index.html">← Back to Shop</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="cart-btn" onclick="window.location.href='index.html'">
+        🛒 <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CHECKOUT PAGE -->
+  <div id="checkoutPage" class="checkout-page">
+    <div class="checkout-container">
+      <a href="index.html" class="back-btn">← Back to Shop</a>
+      <h2>Complete Your Order</h2>
+      <div class="checkout-grid">
+        <form class="checkout-form" onsubmit="placeOrder(event)">
+
+          <h3>Shipping Information</h3>
+          <input type="text" id="fullName" placeholder="Full Name" required />
+          <input type="email" id="email" placeholder="Email Address" required />
+          <input type="text" id="address" placeholder="Street Address" required />
+          <div class="form-row">
+            <input type="text" id="city" placeholder="City" required />
+            <input type="text" id="zip" placeholder="ZIP Code" required />
+          </div>
+          <input type="text" id="country" placeholder="Country" required />
+
+          <h3 style="margin-top:1.5rem">Payment Details</h3>
+          <input type="text" id="cardNumber" placeholder="Card Number" maxlength="19" oninput="formatCard(this)" required />
+          <div class="form-row">
+            <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="7" required />
+            <input type="text" id="cardCvv" placeholder="CVV" maxlength="3" required />
+          </div>
+
+          <h3 style="margin-top:1.5rem">Billing Address</h3>
+          <label class="checkbox-label">
+            <input type="checkbox" id="sameAsShipping" onchange="toggleBilling(this)" checked />
+            Same as shipping address
+          </label>
+          <div id="billingFields" style="display:none">
+            <input type="text" placeholder="Full Name" />
+            <input type="text" placeholder="Street Address" />
+            <div class="form-row">
+              <input type="text" placeholder="City" />
+              <input type="text" placeholder="ZIP Code" />
+            </div>
+            <input type="text" placeholder="Country" />
+          </div>
+
+          <button type="submit" class="btn-primary" id="placeOrderBtn" style="width:100%;margin-top:1.5rem">
+            Place Order
+          </button>
+        </form>
+
+        <div class="order-summary">
+          <h3>Order Summary</h3>
+          <div id="summaryItems"></div>
+          <div class="summary-total">
+            <span>Total</span>
+            <strong id="summaryTotal">$0.00</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER SUCCESS (shown after order placed) -->
+  <div class="success-page" id="successPage" style="display:none">
+    <div class="success-box">
+      <div class="success-icon">🎉</div>
+      <h2>Order Placed!</h2>
+      <p>Thank you for your purchase. You'll receive a confirmation email shortly.</p>
+      <p><small>Discreet packaging — billed as "Eneba Retail Ltd"</small></p>
+      <button class="btn-primary" onclick="window.location.href='index.html'">Continue Shopping</button>
+    </div>
+  </div>
+
+  <script src="assets/js/checkout.js"></script>
+</body>
+</html>

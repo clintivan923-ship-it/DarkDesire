@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dark Desire — Women's Lingerie & Pleasure Store</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    Free shipping on orders over $50 &nbsp;|&nbsp; Discreet packaging guaranteed 🔒
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="logo">Dark<span>Desire</span></div>
+    <nav class="nav-links">
+      <a href="#" onclick="filterCategory('all')">All</a>
+      <a href="#" onclick="filterCategory('pants')">Pants</a>
+      <a href="#" onclick="filterCategory('underwear')">Underwear</a>
+      <a href="#" onclick="filterCategory('toys')">Pleasure</a>
+      <a href="#" onclick="filterCategory('sets')">Sets</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="search-btn" onclick="toggleSearch()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/>
+          <line x1="16.5" y1="16.5" x2="22" y2="22"/>
+        </svg>
+      </button>
+      <button class="cart-btn" onclick="toggleCart()">
+        🛒 <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar" id="searchBar">
+    <input type="text" id="searchInput" placeholder="Search products…" oninput="searchProducts()" />
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-sub">New Collection 2026</p>
+      <h1>Feel <em>Wildly</em> Confident</h1>
+      <p class="hero-desc">Premium lingerie, micro pants & pleasure essentials — all in one place.</p>
+      <button class="btn-primary" onclick="filterCategory('all')">Shop Now</button>
+    </div>
+  </section>
+
+  <!-- CATEGORY CHIPS -->
+  <section class="category-chips">
+    <button class="chip active" onclick="filterCategory('all', this)">All Items</button>
+    <button class="chip" onclick="filterCategory('bodysuits', this)">Bodysuits & Teddies</button>
+    <button class="chip" onclick="filterCategory('sets', this)">Matching Sets</button>
+    <button class="chip" onclick="filterCategory('dresses', this)">Mini Dresses</button>
+    <button class="chip" onclick="filterCategory('shoes', this)">Heels & Boots</button>
+    <button class="chip" onclick="filterCategory('costumes', this)">Costumes</button>
+    <button class="chip" onclick="filterCategory('pants', this)">Hot Pants</button>
+    <button class="chip" onclick="filterCategory('underwear', this)">Underwear</button>
+    <button class="chip" onclick="filterCategory('toys', this)">Pleasure Toys</button>
+  </section>
+
+  <!-- PRODUCTS GRID -->
+  <section class="products-section">
+    <h2 class="section-title">Our Collection</h2>
+    <div class="products-grid" id="productsGrid"></div>
+  </section>
+
+  <!-- CART SIDEBAR -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="cart-empty">Your cart is empty.</p>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">Total: <strong id="cartTotal">$0.00</strong></div>
+      <button class="btn-primary" onclick="goCheckout()">Checkout</button>
+    </div>
+  </aside>
+
+  <!-- PRODUCT MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+  <div class="product-modal" id="productModal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <h4>Dark Desire</h4>
+        <p>Empowering women to feel sexy, confident, and free.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#" onclick="filterCategory('bodysuits',null)">Bodysuits & Teddies</a></li>
+          <li><a href="#" onclick="filterCategory('sets',null)">Matching Sets</a></li>
+          <li><a href="#" onclick="filterCategory('dresses',null)">Mini Dresses</a></li>
+          <li><a href="#" onclick="filterCategory('shoes',null)">Heels & Boots</a></li>
+          <li><a href="#" onclick="filterCategory('costumes',null)">Costumes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>support@darkdesire.com</p>
+        <div class="social-links">
+          <a href="#">Instagram</a>
+          <a href="#">TikTok</a>
+          <a href="#">Pinterest</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Dark Desire. All rights reserved. | 18+ Only | Discreet billing & shipping.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
+
+
+
