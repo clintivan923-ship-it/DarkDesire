@@ -247,6 +247,9 @@ ul { list-style: none; }
 }
 .btn-primary:active { transform: translateY(0); }
 
+/* Remove 300ms tap delay on all touch devices */
+button, a, .chip, .product-card { touch-action: manipulation; }
+
 .btn-ghost {
   background: transparent;
   color: var(--pink);
@@ -836,30 +839,198 @@ ul { list-style: none; }
   font-size: 0.8rem;
 }
 
+/* ===== HAMBURGER MENU ===== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  z-index: 102;
+}
+.hamburger:hover { background: rgba(233,30,140,0.2); }
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ===== MOBILE MENU ===== */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 150;
+}
+.mobile-menu-overlay.open { display: block; }
+
+.mobile-menu {
+  position: fixed;
+  top: 0; left: -280px;
+  width: 270px;
+  height: 100vh;
+  background: var(--dark2);
+  z-index: 151;
+  display: flex;
+  flex-direction: column;
+  padding: 5rem 2rem 2rem;
+  gap: 0.3rem;
+  transition: left 0.35s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto;
+}
+.mobile-menu.open { left: 0; }
+.mobile-menu a {
+  color: #ddd;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--pink-light); }
+
 /* ===== RESPONSIVE ===== */
+
+/* Tablet landscape */
+@media (max-width: 1024px) {
+  .navbar { padding: 0 1.5rem; }
+  .logo { font-size: 1.7rem; }
+  .hero { padding: 4rem 6%; }
+  .checkout-grid { grid-template-columns: 1fr 320px; }
+  .products-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+}
+
+/* Tablet portrait */
 @media (max-width: 900px) {
   .modal-body { grid-template-columns: 1fr; }
-  .modal-img { border-radius: 20px 20px 0 0; height: 260px; }
+  .modal-img { border-radius: 20px 20px 0 0; height: 300px; }
   .modal-thumbs { border-radius: 0; }
   .modal-img-col { border-radius: 0; }
   .checkout-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 
-@media (max-width: 600px) {
-  .nav-links { display: none; }
-  .hero { padding: 3rem 1.5rem; }
-  .hero-content h1 { font-size: 2.2rem; }
-  .products-section { padding: 2rem 1rem 3rem; }
+/* Large phone / small tablet */
+@media (max-width: 768px) {
+  .nav-links { display: none !important; }
+  .hamburger { display: flex; }
+  .logo { font-size: 1.5rem; letter-spacing: 2px; }
+  .navbar { padding: 0 1rem; height: 58px; }
+
+  .hero { padding: 3rem 1.2rem; min-height: 72vh; }
+  .hero-content { max-width: 100%; }
+  .hero-content h1 { font-size: clamp(2rem, 8vw, 3rem); }
+  .hero-sub { font-size: 0.78rem; letter-spacing: 2px; }
+  .hero-desc { font-size: 0.95rem; margin-bottom: 1.5rem; }
+  .btn-primary { padding: 12px 28px; font-size: 0.9rem; }
+
+  /* Horizontally scrollable chips — no wrapping */
+  .category-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 1.2rem 1rem 0;
+    gap: 0.55rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .category-chips::-webkit-scrollbar { display: none; }
+  .chip { white-space: nowrap; flex-shrink: 0; padding: 8px 18px; font-size: 0.8rem; }
+
+  .products-section { padding: 1.8rem 0.75rem 3rem; }
+  .section-title { font-size: 1.6rem; margin-bottom: 1.5rem; }
   .products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
-  .product-img { height: 160px; }
-  .product-info { padding: 0.6rem 0.7rem 0.8rem; }
-  .product-name { font-size: 0.82rem; }
-  .product-price { font-size: 1rem; }
-  .product-price-old { font-size: 0.75rem; }
-  .add-to-cart-btn { font-size: 0.7rem; padding: 6px 10px; }
-  .footer-grid { grid-template-columns: 1fr; }
-  .category-chips { padding: 1.5rem 1rem 0; }
+  .product-img { height: 210px; }
+
+  /* Full-width cart on mobile */
+  .cart-sidebar { width: 100%; max-width: 100%; right: -100%; }
+
+  .checkout-page { padding: 1rem; }
+  .checkout-container h2 { font-size: 1.5rem; margin-bottom: 1.2rem; }
+  .checkout-form, .order-summary { padding: 1.2rem; }
+
+  /* Modal near full-screen */
+  .product-modal { width: 96%; max-height: 94vh; top: 50%; }
+  .modal-img { height: 260px; }
+  .modal-details { padding: 1.2rem; }
+  .modal-name { font-size: 1.3rem; }
+  .modal-price { font-size: 1.2rem; margin-bottom: 0.7rem; }
+  .modal-desc { font-size: 0.85rem; margin-bottom: 0.9rem; }
+  .modal-actions { flex-direction: column; }
+  .modal-actions .btn-primary,
+  .modal-actions .btn-ghost { width: 100%; text-align: center; }
+
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .footer { padding: 2.5rem 1rem 1.5rem; }
+  .footer-bottom { font-size: 0.75rem; }
+}
+
+/* Standard phones (≤600px) */
+@media (max-width: 600px) {
+  .announcement-bar { font-size: 0.74rem; padding: 8px 0.5rem; }
+
+  .product-info { padding: 0.55rem 0.6rem 0.75rem; }
+  .product-name { font-size: 0.8rem; }
+  .product-price { font-size: 0.92rem; }
+  .product-price-old { font-size: 0.7rem; margin-left: 3px; }
+  .add-to-cart-btn { font-size: 0.68rem; padding: 6px 8px; }
+  .product-category { font-size: 0.65rem; }
+  .stars { font-size: 0.75rem; }
+  .rating-count { font-size: 0.68rem; }
+
+  /* iOS 16px input rule — prevents auto-zoom */
+  .checkout-form input:not([type="checkbox"]) { font-size: 1rem; }
+  .search-bar input { font-size: 1rem; }
+
+  /* Stack billing form rows */
+  .form-row { flex-direction: column; gap: 0; }
+
+  .footer-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+  .success-box { padding: 2rem 1rem; }
+  .success-box h2 { font-size: 1.6rem; }
+}
+
+/* Small phones — iPhone SE, Moto G, Galaxy A03 (≤390px) */
+@media (max-width: 390px) {
+  .logo { font-size: 1.25rem; letter-spacing: 1px; }
+  .navbar { height: 54px; }
+  .product-img { height: 175px; }
+  .products-grid { gap: 0.5rem; }
+  .hero-content h1 { font-size: 1.9rem; }
+  .chip { padding: 7px 14px; font-size: 0.76rem; }
+  .modal-img { height: 220px; }
+}
+
+/* Tiny phones — 320px (Galaxy A01, older iPhones) */
+@media (max-width: 340px) {
+  .product-img { height: 150px; }
+  .product-name { font-size: 0.74rem; }
+  .product-price { font-size: 0.85rem; }
+  .add-to-cart-btn { padding: 5px 5px; font-size: 0.62rem; }
+  .logo { font-size: 1.1rem; }
+  .announcement-bar { font-size: 0.68rem; }
+}
+
+/* Safe area insets for notched phones (iPhone X+, Android cutouts) */
+@supports (padding: env(safe-area-inset-left)) {
+  .navbar { padding-left: calc(1rem + env(safe-area-inset-left)); padding-right: calc(1rem + env(safe-area-inset-right)); }
+  .cart-footer { padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)); }
+  .mobile-menu { padding-left: calc(2rem + env(safe-area-inset-left)); }
 }
 
 /* ===== ANIMATIONS ===== */
@@ -890,6 +1061,9 @@ ul { list-style: none; }
     <nav class="nav-links" id="navCheckout" style="display:none">
       <a href="#" onclick="showStore()">← Back to Shop</a>
     </nav>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
     <div class="nav-actions">
       <button class="search-btn" id="searchToggleBtn" onclick="toggleSearch()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -907,6 +1081,17 @@ ul { list-style: none; }
   <div class="search-bar" id="searchBar">
     <input type="text" id="searchInput" placeholder="Search products…" oninput="searchProducts()" />
   </div>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+  <nav class="mobile-menu" id="mobileMenu">
+    <a href="#" onclick="filterCategory('all'); toggleMobileMenu()">All Items</a>
+    <a href="#" onclick="filterCategory('bodysuits'); toggleMobileMenu()">Bodysuits & Teddies</a>
+    <a href="#" onclick="filterCategory('sets'); toggleMobileMenu()">Matching Sets</a>
+    <a href="#" onclick="filterCategory('dresses'); toggleMobileMenu()">Mini Dresses</a>
+    <a href="#" onclick="filterCategory('shoes'); toggleMobileMenu()">Heels & Boots</a>
+    <a href="#" onclick="filterCategory('costumes'); toggleMobileMenu()">Costumes</a>
+  </nav>
 
   <!-- ===== STORE PAGE ===== -->
   <div id="storePage">
@@ -1596,6 +1781,11 @@ function showStore() {
   document.getElementById('navStore').style.display = 'flex';
   document.getElementById('navCheckout').style.display = 'none';
   document.getElementById('searchToggleBtn').style.display = 'flex';
+  // close mobile menu if open
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('mobileMenuOverlay').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
   window.scrollTo(0, 0);
 }
 
@@ -1967,6 +2157,18 @@ function formatExpiry(input) {
   let v = input.value.replace(/\D/g, '').substring(0, 4);
   if (v.length >= 2) v = v.substring(0, 2) + '/' + v.substring(2);
   input.value = v;
+}
+
+/* ===== MOBILE MENU ===== */
+function toggleMobileMenu() {
+  const menu    = document.getElementById('mobileMenu');
+  const overlay = document.getElementById('mobileMenuOverlay');
+  const burger  = document.getElementById('hamburger');
+  const isOpen  = menu.classList.contains('open');
+  menu.classList.toggle('open');
+  overlay.classList.toggle('open');
+  burger.classList.toggle('open');
+  document.body.style.overflow = isOpen ? '' : 'hidden';
 }
 
 /* ===== INIT ===== */
