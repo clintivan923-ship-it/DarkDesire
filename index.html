@@ -1206,7 +1206,7 @@ body.cursor-hover #cursor-ring {
   100% { opacity: 0; transform: translate(-50%, calc(-50% - 28px)) scale(0.3); }
 }
 
-/* Hide custom cursor on touch devices */
+/* Hide dot/ring on touch — keep spark trail */
 @media (hover: none) {
   * { cursor: auto !important; }
   #cursor-dot, #cursor-ring { display: none; }
@@ -2388,7 +2388,7 @@ function toggleMobileMenu() {
 (function () {
   const dot    = document.getElementById('cursor-dot');
   const ring   = document.getElementById('cursor-ring');
-  const sparks = ['💋', '🥒', '💋', '🥒', '💋', '💋'];
+  const sparks = ['🥒'];
   let mouseX = -100, mouseY = -100;
   let ringX  = -100, ringY  = -100;
   let lastSparkTime = 0;
@@ -2398,14 +2398,16 @@ function toggleMobileMenu() {
     mouseY = e.clientY;
     dot.style.left = mouseX + 'px';
     dot.style.top  = mouseY + 'px';
-
-    // Throttle sparks to one every 80ms
     const now = Date.now();
-    if (now - lastSparkTime > 80) {
-      lastSparkTime = now;
-      spawnSpark(mouseX, mouseY);
-    }
+    if (now - lastSparkTime > 80) { lastSparkTime = now; spawnSpark(mouseX, mouseY); }
   });
+
+  // Touch trail for phones
+  document.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    const now = Date.now();
+    if (now - lastSparkTime > 60) { lastSparkTime = now; spawnSpark(t.clientX, t.clientY); }
+  }, { passive: true });
 
   // Ring follows with smooth lag
   function animateRing() {
