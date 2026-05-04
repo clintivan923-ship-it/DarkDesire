@@ -2432,7 +2432,7 @@ function toggleMobileMenu() {
     el.textContent = sparks[Math.floor(Math.random() * sparks.length)];
     el.style.left = (x + (Math.random() * 16 - 8)) + 'px';
     el.style.top  = (y + (Math.random() * 16 - 8)) + 'px';
-    el.style.fontSize = (10 + Math.random() * 8) + 'px';
+    el.style.fontSize = (24 + Math.random() * 16) + 'px';
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 700);
   }
