@@ -23,7 +23,7 @@
   --shadow:  0 8px 32px rgba(233,30,140,0.12);
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; }you 
 
 body {
   font-family: 'Poppins', sans-serif;
@@ -1151,9 +1151,73 @@ button, a, .chip, .product-card { touch-action: manipulation; }
 .product-card {
   animation: fadeInUp 0.4s ease both;
 }
+
+/* ===== CUSTOM CURSOR ===== */
+* { cursor: none !important; }
+
+#cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 10px; height: 10px;
+  background: var(--pink);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px var(--pink), 0 0 20px rgba(233,30,140,0.5);
+  transition: transform 0.08s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+}
+
+#cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 34px; height: 34px;
+  border: 2px solid rgba(233,30,140,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+}
+
+/* Expand cursor on hoverable elements */
+body.cursor-hover #cursor-dot {
+  width: 14px; height: 14px;
+  background: var(--pink-light);
+}
+body.cursor-hover #cursor-ring {
+  width: 44px; height: 44px;
+  border-color: rgba(233,30,140,0.8);
+}
+
+/* Sparkle trail particle */
+.cursor-spark {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9997;
+  font-size: 14px;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  animation: sparkFade 0.7s ease forwards;
+  user-select: none;
+}
+@keyframes sparkFade {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, calc(-50% - 28px)) scale(0.3); }
+}
+
+/* Hide custom cursor on touch devices */
+@media (hover: none) {
+  * { cursor: auto !important; }
+  #cursor-dot, #cursor-ring { display: none; }
+}
   </style>
 </head>
 <body>
+
+  <!-- CUSTOM CURSOR -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
 
   <!-- ANNOUNCEMENT BAR -->
   <div class="announcement-bar">
@@ -2319,6 +2383,60 @@ function toggleMobileMenu() {
   burger.classList.toggle('open');
   document.body.style.overflow = isOpen ? '' : 'hidden';
 }
+
+/* ===== CUSTOM CURSOR ===== */
+(function () {
+  const dot    = document.getElementById('cursor-dot');
+  const ring   = document.getElementById('cursor-ring');
+  const sparks = ['💗', '✨', '💕', '⭐', '🌸', '💖'];
+  let mouseX = -100, mouseY = -100;
+  let ringX  = -100, ringY  = -100;
+  let lastSparkTime = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.left = mouseX + 'px';
+    dot.style.top  = mouseY + 'px';
+
+    // Throttle sparks to one every 80ms
+    const now = Date.now();
+    if (now - lastSparkTime > 80) {
+      lastSparkTime = now;
+      spawnSpark(mouseX, mouseY);
+    }
+  });
+
+  // Ring follows with smooth lag
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.14;
+    ringY += (mouseY - ringY) * 0.14;
+    ring.style.left = ringX + 'px';
+    ring.style.top  = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Grow cursor on interactive elements
+  const hoverTargets = 'a, button, .chip, .product-card, .modal-thumb, .size-btn, .qty-btn, .remove-btn, .logo';
+  document.addEventListener('mouseover', e => {
+    if (e.target.closest(hoverTargets)) document.body.classList.add('cursor-hover');
+  });
+  document.addEventListener('mouseout', e => {
+    if (e.target.closest(hoverTargets)) document.body.classList.remove('cursor-hover');
+  });
+
+  function spawnSpark(x, y) {
+    const el = document.createElement('div');
+    el.className = 'cursor-spark';
+    el.textContent = sparks[Math.floor(Math.random() * sparks.length)];
+    el.style.left = (x + (Math.random() * 16 - 8)) + 'px';
+    el.style.top  = (y + (Math.random() * 16 - 8)) + 'px';
+    el.style.fontSize = (10 + Math.random() * 8) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 700);
+  }
+})();
 
 /* ===== INIT ===== */
 renderProducts(products);
